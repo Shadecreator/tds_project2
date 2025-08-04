@@ -57,7 +57,6 @@ The app uses LLMs (like GPT-4) to **parse your question**, **plan steps**, and *
 ├── README.md             # Project documentation
 ├── requirements.txt      # Python packages
 ├── validator.py          # Validates LLM-generated responses
-└── **pycache**/          # Python cache folder
 
 ````
 
