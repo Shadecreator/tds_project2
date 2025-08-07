@@ -1,139 +1,79 @@
+# My Data Analyst Agent
 
-# 🤖 Data Analyst Agent API
+This project is an intelligent data analyst agent API that accepts analysis tasks, data files, and returns answers—including computations, correlations, and base64-encoded plots.
 
-A powerful FastAPI application that acts like a **Data Analyst Agent**, capable of:
+## Features
 
-- Accepting natural language prompts (from `.txt` files)
-- Analyzing **text or image files**
-- Scraping and processing data
-- Running Python code dynamically
-- Generating plots
-- Returning JSON/text answers in seconds
+- Upload a `questions.txt` file describing your analysis questions.
+- Optional attachments like CSVs, images, or JSON data.
+- Automatic parsing of tasks and generating Python code to perform data analysis.
+- Secure execution of generated code in a sandbox environment.
+- Returns answers in structured JSON and plots as base64 PNG images (<100KB).
+- Deployed as a REST API using FastAPI.
 
----
+## Setup
 
-## 🚀 Features
-
-✅ Accepts `.txt` or image (`.png`, `.jpg`) files  
-✅ Supports any file name (not limited to `question.txt`)  
-✅ Automatically understands the task and handles it end-to-end  
-✅ Generates base64 plots under 100KB for image responses  
-✅ Uses OpenAI LLMs for planning, validation, and reasoning  
-✅ Modular, clean architecture (easy to scale and debug)  
-
----
-
-## 🧠 How It Works
-
-The app uses LLMs (like GPT-4) to **parse your question**, **plan steps**, and **run analysis**.
-
-### ✨ Flow:
-
-1. **User uploads a file** (can be a `.txt` task or an image chart)
-2. `app.py` handles the upload and routes to `handle_task()`
-3. `agent_core.py`:
-   - Reads the question (text or image)
-   - Decides what actions to take
-   - Calls scraping, code execution, and analysis tools
-4. **Image files** are processed via `image_encoder.py` using Vision LLMs
-5. **Python code** is generated and safely executed by `code_executor.py`
-6. Final result is validated by `validator.py` for format correctness
-7. Response is returned as JSON or list of answers + plot (base64-encoded)
-
----
-
-## 📁 Folder Structure
-
+1. Clone the repository:
+```
+git clone https://github.com/yourusername/my-data-analyst-agent.git
+cd my-data-analyst-agent
 ```
 
-.
-├── .env                  # Environment file with OpenAI/AIPipe keys
-├── agent_core.py         # Main logic for task planning and orchestration
-├── app.py                # FastAPI entry point
-├── code_executor.py      # Safely executes generated Python code
-├── image_encoder.py      # Handles image input + OCR + Vision GPT
-├── question.txt          # Sample input file (can be any .txt file)
-├── question_2.txt        # Another sample
-├── README.md             # Project documentation
-├── requirements.txt      # Python packages
-├── validator.py          # Validates LLM-generated responses
-
-````
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/VS-Abhijith/data-analyst-agent.git
-cd data-analyst-agent
-````
-
-### 2. Install dependencies
-
-```bash
+2. Create a virtual environment and install dependencies:
+```
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Set your environment variables
-
-Create a `.env` file:
-
+3. Set your environment variables in `.env`:
 ```
-OPENAI_API_KEY=your_key_here
-OPENAI_BASE_URL=https://aipipe.org/openai/v1  # optional if using AIPipe
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_BASE_URL=https://aipipe.org/openai/v1  # optional
 ```
 
-### 4. Start the server
+## Running Locally
 
-```bash
+Start the FastAPI server:
+
+```
 uvicorn app:app --reload
 ```
 
----
+API will be available at `http://localhost:8000/api/`.
 
-## 📤 Example Usage
+## Usage
 
-### Upload a `.txt` file:
+Make a POST request with `questions.txt` and optional data files.
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/ -F "file=@mytask.txt"
+Example `curl` command:
+
+```
+curl -X POST "http://localhost:8000/api/" \
+  -F "questions.txt=@questions.txt" \
+  -F "data.csv=@data.csv"
 ```
 
-### Upload an image:
+Response will be a JSON array or object with answers and base64-encoded plots where applicable.
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/ -F "file=@myplot.png"
-```
+## Deployment
 
-🟢 You can upload any file name. Output is automatically structured.
+- Deploy your app on platforms like Render, Railway, Heroku, or your own server.
+- Ensure environment variables are set securely.
+- Verify endpoint accessibility before submission.
 
----
+## Customizations and Improvements
 
-## 🔍 Example Output (Text Request)
-
-```json
-{
-  "response": [
-    1,
-    "Titanic",
-    0.485782,
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..."
-  ]
-}
-```
+- Customized GPT prompt to match project style and output requirements.
+- Added enhanced error handling and code execution logging.
+- Extended plotting options and output validation.
 
 ---
 
-## 👨‍💻 Author
+## 3. Documentation Tips
 
-* GitHub: [VS-Abhijith](https://github.com/VS-Abhijith)
-* LinkedIn: [Abhijith VS](https://www.linkedin.com/in/vsabhijith)
+- Add a `docs/` folder with usage examples.
+- Write sample input files and the expected output files.
+- Document your internal modules and functions with docstrings.
+- Maintain a changelog of your modifications vs. original repo.
 
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
