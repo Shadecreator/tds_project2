@@ -3,7 +3,7 @@
 import os
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
-from code_executor import run_generated_code
+from code_executor import run_python_code
 from validator import validate_output
 
 load_dotenv()
@@ -12,13 +12,20 @@ client = AsyncOpenAI(
     base_url=os.getenv("OPENAI_BASE_URL")
 )
 
-async def handle_task(task: str):
+async def process_analysis_task(task: str):
     # 1. Ask GPT to generate code
-    prompt = f"""You are a data analyst. Given the task below, write the required Python code.
-Task:
+    prompt = f"""You are an expert data analyst and Python programmer.
+Given the task below, create clean and efficient Python code to perform the analysis.
+
+Task description:
 {task}
 
-Only output the Python code."""
+Important:  
+- Return only valid Python code implementing the analysis.  
+- If plotting is requested, save the plot as a PNG (under 100KB) and encode it as a base64 string to be returned as specified.  
+- Do not explain your code or output anything but the code.  
+- Follow the output format requirements strictly.
+"""
     
     response = await client.chat.completions.create(
         model="gpt-4o",

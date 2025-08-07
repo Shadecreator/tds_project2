@@ -1,7 +1,7 @@
 # app.py
 
 from fastapi import FastAPI, UploadFile, File
-from agent_core import handle_task
+from agent_core import process_analysis_task
 
 app = FastAPI()
 

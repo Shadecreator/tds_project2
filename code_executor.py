@@ -3,7 +3,7 @@
 import io
 import contextlib
 
-def run_generated_code(code: str) -> str:
+def run_python_code(code: str) -> str:
     output = io.StringIO()
     try:
         with contextlib.redirect_stdout(output):
